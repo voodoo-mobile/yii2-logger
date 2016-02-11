@@ -1,0 +1,43 @@
+{
+  "name": "voodoo-mobile/yii2-logger",
+  "description": "Additional Redis and Slack log target for Yii2",
+  "type": "yii2-component",
+  "keywords": [
+    "voodoo-mobile",
+    "yii",
+    "yii2",
+    "yii 2",
+    "logger",
+    "redis",
+    "slack",
+    "component"
+  ],
+  "homepage": "https://github.com/voodoo-mobile/yii2-logger",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Voodoo Mobile Ltd.",
+      "email": "public@voodoo-mobile.com",
+      "homepage": "https://voodoo.rocks",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/voodoo-mobile/yii2-logger/issues",
+    "source": "https://github.com/voodoo-mobile/yii2-logger"
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "yiisoft/yii2": "^2.0.6",
+    "monolog/monolog": "^1.17",
+    "predis/predis": "^1.0.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "vm\\logger\\": "src"
+    }
+  }
+}
