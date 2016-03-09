@@ -6,6 +6,7 @@
  */
 namespace vm\logger;
 
+use app\models\ext\User;
 use Monolog\Handler\RedisHandler;
 use Monolog\Handler\SlackHandler;
 use Monolog\Logger;
@@ -134,10 +135,10 @@ class MonologTarget extends Target
         $post = ob_get_contents();
         ob_end_clean();
 
-        if (!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest && method_exists('User', 'loggedIn')) {
             ob_start();
             echo '```';
-            print_r(Yii::$app->user->attributes);
+            print_r(User::loggedIn()->attributes);
             echo '```';
             $user = ob_get_contents();
             ob_end_clean();
