@@ -12,9 +12,7 @@ use Monolog\Handler\SlackHandler;
 use Monolog\Logger;
 use Predis\Client;
 use Yii;
-use yii\base\Exception;
 use yii\log\Target;
-use yii\web\HttpException;
 
 /**
  * Class MonologTarget
@@ -99,25 +97,7 @@ class MonologTarget extends Target
      */
     public function export()
     {
-        if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
-            return false;
-        }
-
-        if ($exception instanceof HttpException) {
-            $code = $exception->statusCode;
-        } else {
-            $code = null;
-        }
-        if ($exception instanceof Exception) {
-            $name = $exception->getName();
-        } else {
-            $name = $this->defaultName ?: Yii::t('yii', 'Error');
-        }
-        if ($code) {
-            $name .= " (#$code)";
-        }
-
-        $message = $exception->getMessage();
+        $message = implode("\n", array_map([$this, 'formatMessage'], $this->messages)) . "\n";
         $user    = null;
 
         ob_start();
@@ -145,8 +125,7 @@ class MonologTarget extends Target
 
         ob_start();
         echo '*_', Yii::$app->id, '_*', PHP_EOL;
-        echo '*', $name, ' - ', $message, '*', PHP_EOL;
-        echo '`', $exception->getFile(), " : ", $exception->getLine(), '`', PHP_EOL, PHP_EOL;
+        echo '```', $name, ' - ', $message, '```', PHP_EOL, PHP_EOL;
 
         echo $_GET ? '*GET:*' . PHP_EOL . $get . PHP_EOL . PHP_EOL : '';
         echo $_POST ? '*POST:*' . PHP_EOL . $post . PHP_EOL . PHP_EOL : '';
@@ -166,7 +145,6 @@ class MonologTarget extends Target
         echo Yii::$app->user->isGuest ? '*Guest user*' . PHP_EOL . PHP_EOL : '';
         echo $user ? '*User:*' . PHP_EOL . $user . PHP_EOL . PHP_EOL : '';
 
-        echo '*Stacktrace:*', PHP_EOL, '```', $exception->getTraceAsString(), '```', PHP_EOL, PHP_EOL;
         $text = ob_get_contents();
         ob_end_clean();
 
