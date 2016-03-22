@@ -125,7 +125,7 @@ class MonologTarget extends Target
 
         ob_start();
         echo '*_', Yii::$app->id, '_*', PHP_EOL;
-        echo '```', $name, ' - ', $message, '```', PHP_EOL, PHP_EOL;
+        echo '```', $message, '```', PHP_EOL, PHP_EOL;
 
         echo $_GET ? '*GET:*' . PHP_EOL . $get . PHP_EOL . PHP_EOL : '';
         echo $_POST ? '*POST:*' . PHP_EOL . $post . PHP_EOL . PHP_EOL : '';
