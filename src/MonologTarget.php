@@ -97,6 +97,9 @@ class MonologTarget extends Target
      */
     public function export()
     {
+        if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
+            return true;
+        }
         $message = implode("\n", array_map([$this, 'formatMessage'], $this->messages)) . "\n";
         $user    = null;
 
